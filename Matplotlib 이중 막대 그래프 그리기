@@ -1,0 +1,58 @@
+# 작업에 필요한 라이브러리 실행하기.
+import pandas as pd
+import numpy as np
+import matplotlib
+import matplotlib.pyplot as plt
+
+# 경고 메세지 무시하기.
+import warnings
+warnings.filterwarnings('ignore')
+
+# 예제 테이블 불러오기.
+f_max = pd.read_csv('/Users/choisubin/Desktop/SubinChoi/DA/resultTable/f_max.csv', encoding='UTF8')
+m_max = pd.read_csv('/Users/choisubin/Desktop/SubinChoi/DA/resultTable/m_max.csv', encoding='UTF8')
+
+# 한글 깨짐 방지를 위해 'AppleGothic' 지정해주기.
+plt.rcParams['font.family'] = 'AppleGothic'
+matplotlib.rcParams['axes.unicode_minus'] = False
+
+# 남녀 이용자의 연령별 카드이용건수가 가장 높은 분야
+# 그래프 사이즈, 바 굵기 조정하기.
+fig, ax = plt.subplots(figsize=(12, 6))
+bar_width = 0.25
+# 연령대가 10대에서 60대까지이므로 6으로 지정해주기.
+index = np.arange(6)
+# 사용하고자 하는 테이블 삽입하기.
+# alpha는 투명도, label은 범례를 의미하며, color에는 원하는 색상 코드를 삽입하면 됨.
+mMax = plt.bar(index, m_max['카드이용건수 합계'], bar_width, alpha=0.7, color='#14213d', label = '남')
+fMax = plt.bar(index+bar_width, f_max['카드이용건수 합계'], bar_width, alpha=0.7, color='#fca311', label = '여')
+# x축 위치를 정 가운데로 조정하고 x축의 텍스트를 연령대 정보와 매칭하기.
+plt.xticks(np.arange(bar_width, 6 + bar_width, 1), f_min['연령대별(AGE_GB)'])
+
+# 막대 위에 업종 표시하기. (연령별로 1씩 차이가 나고, 성별은 0.25씩 차이가 남)
+# for문 사용하기.
+# 여성 이용자
+fMaxUpjong = f_max['내국인업종분류(SB_UPJONG_NM)']
+for i in range(len(fMaxUpjong)):
+    x = i + 0.25
+    y = f_max['카드이용건수 합계'][i] + 100
+    plt.text(x, y, fMaxUpjong[i],
+             fontsize=10,
+             horizontalalignment='center',
+             verticalalignment='bottom')
+# 남성 이용자
+mMaxUpjong = m_max['내국인업종분류(SB_UPJONG_NM)']
+for i in range(len(mMaxUpjong)):
+    x = i + 0
+    y = m_max['카드이용건수 합계'][i] + 100
+    plt.text(x, y, mMaxUpjong[i],
+             fontsize=10,
+             horizontalalignment='center',
+             verticalalignment='bottom')
+
+# x축, y축 이름과 그래프 제목 설정하기.
+plt.xlabel('연령대별', size=13)
+plt.ylabel('카드이용건수 합계', size=13)
+plt.legend()
+plt.title('남녀 이용자의 연령별 카드이용건수가 가장 높은 분야', size=18)
+plt.show()
