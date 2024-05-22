@@ -1,0 +1,39 @@
+# 필요한 패키지 실행하기.
+import pandas as pd
+import numpy as np
+import matplotlib
+import matplotlib.pyplot as plt
+
+# 경고 메세지 무시하기.
+import warnings
+warnings.filterwarnings('ignore')
+
+# 한글 깨짐 방지를 위해 'AppleGothic' 지정해주기.
+plt.rcParams['font.family'] = 'AppleGothic'
+matplotlib.rcParams['axes.unicode_minus'] = False
+
+# 예제 테이블 불러오기.
+year = pd.read_csv('/Users/choisubin/Desktop/SubinChoi/DA/resultTable/year.csv', encoding='UTF8')
+day = pd.read_csv('/Users/choisubin/Desktop/SubinChoi/DA/resultTable/day.csv', encoding='UTF8')
+
+# 예제 테이블 출력하기.
+print("연도별 외식 소비에 대한 카드 이용건수와 이용금액의 합계 \n", year)
+print("요일별 외식 소비에 대한 카드 이용건수와 이용금액의 합계 \n", day)
+
+# 1) 연도별 외식 소비 경향
+myColors = ['#e76f51', '#f4a261', '#e9c46a', '#2a9d8f', '#264653']
+explodes = [0, 0, 0, 0.05, 0]
+# statangle = 시작 각도 설정, counterclock = 시계 방향으로 설정
+# explode = 특정값이 중심에서 벗어나는 정도 설정, autopct = 그래프에 표시될 숫자 형식 지정
+plt.pie(year['카드이용건수 합계'], labels=year['연도'], autopct='%.1f%%',
+        explode=explodes, startangle=90, counterclock=False, colors=myColors)
+plt.title('연도별 외식 소비 경향', fontsize=12)
+plt.show()
+
+# 2) 요일별 외식 소비 경향
+myColors = ['#ffadad', '#ffd6a5', '#fdffb6', '#caffbf', '#9bf6ff', '#a0c4ff', '#bdb2ff']
+explodes = [0, 0, 0, 0, 0, 0.05, 0]
+plt.pie(day['카드이용건수 합계'], labels=day['요일(DAW)'], autopct='%.1f%%',
+        explode=explodes, startangle=90, counterclock=False, colors=myColors)
+plt.title('요일별 외식 소비 경향', fontsize=12)
+plt.show()
