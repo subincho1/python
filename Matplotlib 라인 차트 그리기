@@ -1,0 +1,53 @@
+# 필요한 패키지 실행하기.
+import pandas as pd
+import numpy as np
+import matplotlib
+import matplotlib.pyplot as plt
+
+# 경고 메세지 무시하기.
+import warnings
+warnings.filterwarnings('ignore')
+
+# 한글 깨짐 방지를 위해 'AppleGothic' 지정해주기.
+plt.rcParams['font.family'] = 'AppleGothic'
+matplotlib.rcParams['axes.unicode_minus'] = False
+
+# 예제 테이블 불러오기.
+year = pd.read_csv('/Users/choisubin/Desktop/SubinChoi/DA/resultTable/year.csv', encoding='UTF8')
+day = pd.read_csv('/Users/choisubin/Desktop/SubinChoi/DA/resultTable/day.csv', encoding='UTF8')
+
+# 예제 테이블 출력하기.
+print("연도별 외식 소비에 대한 카드 이용건수와 이용금액의 합계 \n", year)
+print("요일별 외식 소비에 대한 카드 이용건수와 이용금액의 합계 \n", day)
+
+# 1) 연도별 외식 소비 경향
+# 그래프 크기 지정하기.
+plt.figure(figsize=(10,6))
+# x,y축 데이터 입력, marker를 통해 마커 모양 지정하기.
+plt.plot(year['연도'], year['카드이용건수 합계'], color='#083d77', marker='o')
+# x,y축 라벨 입력하기.
+plt.xlabel('연도별')
+plt.ylabel('카드이용건수 합계')
+# x,y축 범위 지정하기.
+plt.xlim([2016, 2022])
+plt.ylim([1000000, 4000000])
+# 그래프 그리드 설정하기.
+plt.grid(color='0.8')
+# 지수 표현 형식(scientific notation) 제거 및 천단위 콤마 찍기.
+current_values = plt.gca().get_yticks()
+plt.gca().set_yticklabels(['{:,.0f}'.format(x) for x in current_values])
+# 그래프 제목 설정하기.
+plt.title('연도별 외식 소비 경향', fontsize=15)
+plt.show()
+
+# 2) 요일별 외식 소비 경향
+plt.figure(figsize=(10,6))
+plt.plot(day['요일(DAW)'], day['카드이용건수 합계'], color='#254441', marker='o')
+plt.xlabel('요일별')
+plt.ylabel('카드이용건수 합계')
+plt.ylim([1000000, 3000000])
+plt.grid(color='0.8')
+current_values = plt.gca().get_yticks()
+plt.gca().set_yticklabels(['{:,.0f}'.format(x) for x in current_values])
+plt.title('요일별 외식 소비 경향', fontsize=15)
+plt.show()
